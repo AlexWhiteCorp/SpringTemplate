@@ -1,0 +1,9 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="~{parts/head :: head('Spring Template', true, true)}"></head>
+<body class="scroll">
+    <div th:replace="~{parts/header :: header}"></div>
+    <div id="content" style="font-weight: bold; flood-color: darkgreen; text-align: center">Spring Template</div>
+    <div th:replace="~{parts/footer :: footer}"></div>
+</body>
+</html>

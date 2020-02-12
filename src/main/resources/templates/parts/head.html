@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Head block template with basic settings and title as param || Included in all pages -->
+    <div th:fragment="head(title, is_header, is_footer)">
+        <meta charset="UTF-8">
+        <meta name="theme-color" content="#131c28">
+
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0">
+        <meta name="apple-mobile-web-app-capable" content="yes" >
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+
+        <base href="/" />
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+        <link rel="shortcut icon" href="/favicon.ico">
+
+        <link rel="stylesheet" type="text/css" href="/styles/style.css">
+        <link th:if="${is_header}" rel="stylesheet" type="text/css" href="/styles/header.css">
+        <link th:if="${is_footer}"rel="stylesheet" type="text/css" href="/styles/footer.css">
+
+        <title th:text="${title}"></title>
+    </div>
+</body>
+</html>

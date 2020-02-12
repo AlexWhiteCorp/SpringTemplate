@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <!-- Header template || Included in most pages(optionally) -->
+    <div id="header-container" class="header-container row" th:fragment="header">
+        <a href="/">
+            <img src="/favicon.ico" alt="" class="header-logo">
+        </a>
+        <div class="header-title">Spring Template</div>
+        <div style="font-size: 16px; margin-right: 25px" th:if="${session.nickname}">
+            <form th:action="@{/logout}" method="post">
+                <input style="float: right" class="exit-button" type="submit" value="Exit"/></li>
+            </form>
+            <div style="float: right; margin-right: 10px" th:text="'Welcome, ' + ${session.nickname}"></div>
+        </div>
+        <div th:unless="${session.nickname}">
+            <a style="float: right; margin-right: 15px; font-size: 16px" href="/registration">Registration</a>
+            <span style="float: right; font-size: 16px">&nbsp;|&nbsp;</span>
+            <a style="float: right; font-size: 16px" href="/login">Login</a>
+        </div>
+    </div>
+</body>
+</html>

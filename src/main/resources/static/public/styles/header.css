@@ -1,0 +1,43 @@
+.header-container{
+    position: fixed;
+    left: 0;
+    top: 0;
+    min-height: 60px;
+    max-height: 60px;
+    min-width: 100%;
+    border-bottom: 2px solid #205b77;
+    box-shadow: 0px 0px 90px rgba(32, 91, 119, 0.25);
+
+
+    text-align: center;
+    font-size: 26px;
+    line-height: 60px;
+    font-weight: bold;
+    color: #49647f;
+}
+
+.header-logo{
+    float: left;
+    height: 50px;
+    margin: 5px;
+    border-radius: 50px;
+    box-shadow: 0px 5px 45px rgba(32, 91, 119, 0.8);
+    cursor: pointer;
+}
+
+.header-title{
+    float: left;
+    margin-left: 15px;
+}
+
+.exit-button{
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+
+    font-weight: bold;
+    line-height: 60px;
+    font-size: 16px;
+    color: #49647f;
+}

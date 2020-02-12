@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Footer template || Included in most pages(optionally) -->
+    <div id="footer-container" class="footer-container" th:fragment="footer">
+        <div>Footer</div>
+        <script type="text/javascript">
+            var header = document.getElementById('header-container');
+            var content = document.getElementById('content');
+            var footer = document.getElementById('footer-container');
+            content.style.minHeight = window.innerHeight - header.offsetHeight - footer.offsetHeight + 'px';
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="~{parts/head :: head('Spring Template', false, false)}"></head>
+<link rel="stylesheet" type="text/css" href="/styles/authorization.css">
+<style>
+    .input-button{
+        width: 90%;
+        height: 30px;
+        margin: 0px 0px 20px 0;
+        padding: 3px 10px 3px 10px;
+    }
+
+    .inviteCodeText{
+        width: fit-content;
+        margin: 0px 0px 10px 10px;
+        padding-bottom: 2px;
+        border-bottom: 1.5px dotted #49647f;
+        cursor: pointer;
+
+        text-align: left;
+        font-size: 14px;
+        line-height: 14px;
+    }
+
+    .inviteCodeText:hover{
+        filter: brightness(1.5);
+    }
+
+    .i-agree-div{
+        width: 90%;
+        margin: 0px 5% 15px 5%;
+
+        text-align: left;
+        font-size: 13px;
+        line-height: 24px;
+        white-space: normal;
+    }
+
+    .checkbox {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+        margin: 10px 0 0 20px;
+    }
+
+    .checkbox + label:hover{
+        filter: brightness(1.5);
+    }
+
+    .checkbox + label {
+        position: relative;
+        padding: 0 0 0 40px;
+        cursor: pointer;
+    }
+    .checkbox + label:before {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: 0px;
+        width: 20px;
+        height: 20px;
+        border: solid 1.5px #205b77;
+        background: #05121b;
+        box-shadow: inset 0 2px 3px rgba(0,0,0,.2);
+    }
+
+    .checkbox:checked + label:before {
+        content: '\2714';
+
+        font-size: 22px;
+        color: #49647f;
+    }
+</style>
+<body class="scroll">
+    <div id="input-form-div" class="inputFormDiv">
+        <a href="/"><img src="/favicon.ico" alt="" id="registration-form-div-logo" class="form-div-logo"></a>
+        <div id="form-div" class="form-div">
+            <form method="post">
+                <div class="form-div-title">Create Account</div>
+                <input id="r-email" class="input-field" name="email" type="email" placeholder="E-mail" spellcheck="false"><br>
+                <input id="r-nickname" class="input-field" name="nickname" type="text" placeholder="Nickname" spellcheck="false"><br>
+                <input id="r-password" class="input-field" name="password" type="password" placeholder="Password" spellcheck="false"><br>
+                <input id="r-password2" class="input-field" name="password2" type="password" placeholder="Confirm password" spellcheck="false"><br>
+                <div id="inviteCodeText" class="inviteCodeText">Have an invite code?</div>
+                <input id="r-inviteCode" class="inputField" name="invite" type="text" placeholder="Invite Code" spellcheck="false" style="margin: 0px 0px 0px 3px"><br>
+                <div class="i-agree-div">
+                    <input type="checkbox" class="checkbox" id="r-checkbox"/>
+                    <label for="r-checkbox" id="checkBoxText">
+                        <div style="display: inline; margin-left: -10px">
+                            I accept the License Agreement and acknowledge that I have read and understood the Privacy Policy.
+                        </div>
+                    </label>
+                </div>
+                <div id="errorMessage" class="error-message"></div>
+                <input id="r-submit" class="input-button" name="button" value="Create Account" readonly>
+            </form>
+        </div>
+
+        <script>
+            var formDiv = document.getElementById('form-div');
+            formDiv.style.left = (window.innerWidth - formDiv.offsetWidth) / 2 + 'px';
+            formDiv.style.top = (window.innerHeight - formDiv.offsetHeight) / 2 + 'px';
+
+            if(formDiv.offsetHeight > window.innerHeight)document.body.style.minHeight = formDiv.offsetHeight + 50 + 'px';
+            else document.body.style.minHeight = window.innerHeight + 'px';
+            document.body.style.minWidth = formDiv.offsetWidth + 4 + 'px';
+
+
+            var formDivLogo = document.getElementById('registration-form-div-logo');
+            formDivLogo.style.left = (window.innerWidth - formDivLogo.offsetWidth) / 2 + 'px';
+            formDivLogo.style.top = (window.innerHeight - formDiv.offsetHeight - formDivLogo.offsetHeight) / 2 + 'px';
+
+
+            var email = document.getElementById('r-email');
+            var nickname = document.getElementById('r-nickname');
+            var password = document.getElementById('r-password');
+            var password2 = document.getElementById('r-password2');
+            var inviteCode = document.getElementById('r-inviteCode');
+            var accept = document.getElementById('r-checkbox');
+
+            if(localStorage.getItem('registration_email') != null) email.value = localStorage.getItem('registration_email');
+            if(localStorage.getItem('nickname') != null) nickname.value = localStorage.getItem('nickname');
+
+            document.getElementById('r-submit').onclick = function(){
+                if(email.value === '') {
+                    document.getElementById('errorMessage').innerText = 'Enter your E-mail, please!';
+                    return false;
+                }
+                if(email.value.indexOf('@') === -1) {
+                    document.getElementById('errorMessage').innerText = 'Incorrect email!';
+                    return false;
+                }
+                localStorage.setItem('registration_email', email.value);
+                if(nickname.value === '') {
+                    document.getElementById('errorMessage').innerText = 'Enter your Nickname, please!';
+                    return false;
+                }
+                localStorage.setItem('nickname', nickname.value);
+                if(password.value === ''){
+                    document.getElementById('errorMessage').innerText = 'Enter your Password, please!';
+                    return false;
+                }
+                if(password2.value === ''){
+                    document.getElementById('errorMessage').innerText = 'Confirm your Password, please!';
+                    return false;
+                }
+                if(password.value !== password2.value){
+                    document.getElementById('errorMessage').innerText = 'Passwords don\'t match!';
+                    return false;
+                }
+                if(!accept.checked){
+                    document.getElementById('checkBoxText').style.color = '#c73232';
+                    return false;
+                }
+
+
+                var token = $("meta[name='_csrf']").attr("content");
+                $.ajax({
+                    type: 'POST',
+                    url: '/registration',
+                    data: JSON.stringify(
+                        {
+                        email : email.value,
+                        nickname : nickname.value,
+                        password : password.value,
+                        password2 : password2.value,
+                        invite : inviteCode.value
+                        }
+                    ),
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    },
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function(data){
+                        if(data.error === '') {
+                            localStorage.setItem('login_email', email.value);
+                            document.location.href = '/login';
+                        }
+                        else {
+                            document.getElementById('errorMessage').innerText = data.error;
+                            password.value = '';
+                            password2.value = '';
+                        }
+                    }
+                });
+                return true;
+            };
+
+            var showIniteCodeField = false;
+            document.getElementById('r-inviteCode').style.display = 'none';
+
+            document.getElementById('inviteCodeText').onclick = function(){
+                if(!showIniteCodeField){
+                    document.getElementById('r-inviteCode').style.display = 'block';
+                    showIniteCodeField = true;
+                }
+                else{
+                    document.getElementById('r-inviteCode').style.display = 'none';
+                    showIniteCodeField = false;
+                }
+            };
+
+            accept.onclick = function(){
+                document.getElementById('checkBoxText').style.color = '#49647f';
+            }
+        </script>
+    </div>
+</body>
+</html>

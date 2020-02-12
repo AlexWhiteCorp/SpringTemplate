@@ -2,13 +2,17 @@ package com.alexcorp.springtemplate.domains;
 
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
 @Table(name = "USR")
-public class User{
+public class User implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(generator = "increment")
@@ -17,6 +21,7 @@ public class User{
 
     private String email;
     private String password;
+    private String nickname;
 
     @Enumerated(EnumType.STRING)
     private Active active;
@@ -29,9 +34,10 @@ public class User{
     public User() {
     }
 
-    public User(String email, String password, Active active, Set<Role> roles) {
+    public User(String email, String password, String nickname, Active active, Set<Role> roles) {
         this.email = email;
         this.password = password;
+        this.nickname = nickname;
         this.active = active;
         this.roles = roles;
     }
@@ -52,8 +58,46 @@ public class User{
         this.email = email;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !active.equals(Active.BANNED);
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return active.equals(Active.ACTIVE);
     }
 
     public void setPassword(String password) {
@@ -80,7 +124,12 @@ public class User{
         NON_ACTIVE, ACTIVE, BANNED;
     }
 
-    public enum Role{
+    public enum Role implements GrantedAuthority{
         USER, ADMIN;
+
+        @Override
+        public String getAuthority() {
+            return name();
+        }
     }
 }
