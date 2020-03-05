@@ -77,12 +77,19 @@
         <div id="form-div" class="form-div">
             <form method="post">
                 <div class="form-div-title">Create Account</div>
+
                 <input id="r-email" class="input-field" name="email" type="email" placeholder="E-mail" spellcheck="false"><br>
+
                 <input id="r-nickname" class="input-field" name="nickname" type="text" placeholder="Nickname" spellcheck="false"><br>
+
                 <input id="r-password" class="input-field" name="password" type="password" placeholder="Password" spellcheck="false"><br>
+
                 <input id="r-password2" class="input-field" name="password2" type="password" placeholder="Confirm password" spellcheck="false"><br>
+
                 <div id="inviteCodeText" class="inviteCodeText">Have an invite code?</div>
+
                 <input id="r-inviteCode" class="inputField" name="invite" type="text" placeholder="Invite Code" spellcheck="false" style="margin: 0px 0px 0px 3px"><br>
+
                 <div class="i-agree-div">
                     <input type="checkbox" class="checkbox" id="r-checkbox"/>
                     <label for="r-checkbox" id="checkBoxText">
@@ -91,7 +98,9 @@
                         </div>
                     </label>
                 </div>
+
                 <div id="errorMessage" class="error-message"></div>
+
                 <input id="r-submit" class="input-button" name="button" value="Create Account" readonly>
             </form>
         </div>
@@ -120,6 +129,9 @@
 
             if(localStorage.getItem('registration_email') != null) email.value = localStorage.getItem('registration_email');
             if(localStorage.getItem('nickname') != null) nickname.value = localStorage.getItem('nickname');
+
+            password.value = '';
+            password2.value = '';
 
             document.getElementById('r-submit').onclick = function(){
                 if(email.value === '') {

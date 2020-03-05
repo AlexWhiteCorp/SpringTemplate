@@ -4,68 +4,13 @@
 </head>
 <link rel="stylesheet" type="text/css" href="/styles/authorization.css">
 <style>
-    .input-button-div{
-        float: left;
-        width: 50%;
-
-        text-align: center;
-    }
-
     .input-button{
         width: 70%;
         height: 30px;
         margin: 0px 0px 0px 0;
         padding: 3px 10px 3px 10px;
     }
-
-    .remember-me-div{
-        position: relative;
-        top: 2px;
-        left: -16px;
-        float: right;
-        width: 50%;
-        margin: 0px 0px 10px 0px;
-
-        text-align: center;
-        font-size: 18px;
-        font-weight: bolder;
-    }
-
-    .checkbox {
-        position: absolute;
-        z-index: -1;
-        opacity: 0;
-        margin: 10px 0 0 20px;
-    }
-
-    .checkbox + label:hover{
-        filter: brightness(1.5);
-    }
-
-    .checkbox + label {
-        position: relative;
-        padding: 0 0 0 60px;
-        cursor: pointer;
-    }
-    .checkbox + label:before {
-        content: '';
-        position: absolute;
-        top: -1px;
-        left: 20px;
-        width: 20px;
-        height: 20px;
-        border: solid 1.5px #205b77;
-        background: #05121b;
-        box-shadow: inset 0 2px 3px rgba(0,0,0,.2);
-    }
-
-    .checkbox:checked + label:before {
-        content: '\2714';
-
-        font-size: 22px;
-        color: #49647f;
-    }
-
+    
     .underline{
         background: #205b77;
         float: left;
@@ -109,15 +54,7 @@
             <input id="l-email" class="input-field" name="username" type="email" placeholder="E-mail" spellcheck="false"><br>
             <input id="l-password" class="input-field" name="password" type="password" placeholder="Password" spellcheck="false"><br>
             <div id="errorMessage" class="error-message"></div>
-            <div class="row">
-                <div class="input-button-div">
-                    <input id="l-submit" class="input-button" name="submit" value="Log in" type="submit">
-                </div>
-                <div class="remember-me-div row">
-                    <input type="checkbox" id="remember-me" class="checkbox" name="remember"/>
-                    <label for="remember-me"><div style="display: inline; margin-left: -10px">Remember Me</div></label>
-                </div>
-            </div>
+            <input id="l-submit" class="input-button" name="submit" value="Log in" type="submit">
             <div class="row" style="width: 100%;">
                 <div id="left-underline" class="underline"></div>
                 <div id="right-underline" class="underline"></div>
@@ -143,7 +80,6 @@
 
         var email = document.getElementById('l-email');
         var password = document.getElementById('l-password');
-        var rememberMe = document.getElementById('remember-me');
         if(document.referrer.indexOf('login') === -1 && document.referrer.indexOf('registration') === -1)
             localStorage.setItem('url', document.referrer);
 
@@ -171,8 +107,7 @@
                 data: JSON.stringify(
                     {
                         email : email.value,
-                        password : password.value,
-                        remember : rememberMe.checked
+                        password : password.value
                     }
                 ),
                 headers: {
